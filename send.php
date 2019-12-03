@@ -4,7 +4,6 @@ if($_POST) {
     $name = "";
     $email = "";
     $category = "";
-    $concerned_department = "";
     $message = "";
      
     if(isset($_POST['name'])) {
