@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+  <title>Projects - Arduino PCB</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/gallery.css" />
+  <link rel="stylesheet" href="assets/css/default-skin.css" />
+  <link rel="stylesheet" href="assets/css/video-responsive.css" />
+
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+      <a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+      <nav>
+        <a href="#menu">Menu</a>
+      </nav>
+    </header>
+
+    <!-- Menu -->
+    <nav id="menu">
+      <ul class="links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutmichael.html">About Michael</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+      <!--
+						<ul class="actions stacked">
+							<li><a href="#" class="button primary fit">Get Started</a></li>
+							<li><a href="#" class="button fit">Log In</a></li>
+						</ul>
+						-->
+    </nav>
+
+    <!-- Main -->
+    <div id="main" class="alt">
+
+      <!-- One -->
+      <section id="one">
+        <div class="inner">
+          <header class="major">
+            <h1>Arduino PCB Project</h1>
+          </header>
+          <p>An Arduino Uno was reverse engineered and a small PCB with all necessary components was designed using Mentor PADS software and made ready to be sent in for fabrication.</p>
+        </div>
+      </section>
+      <!-- <section> -->
+
+<!--      <h2 style="text-align:center">Slideshow Gallery</h2> -->
+<!-- Gallery from https://www.publicalbum.org/blog/embedding-google-photos-albums -->
+
+<section>
+  <div class="inner">
+    <center>
+      <img src="images/arduino/Project Arduino Schematic.jpg"></img>
+    </center>
+  </div>
+</section>
+        <!-- ~~ YouTube Video ~~ -->
+     <section>
+	<div class="inner">
+		<div class="video-responsive">
+			<center>
+			<iframe width="280" height="158" src="https://www.youtube-nocookie.com/embed/kmtQ0jHRNI0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</center>
+		</div>
+	</div>
+     </section>
+        <!-- ~~ End YouTube Video ~~ -->
+     <section>
+	<div class="inner">
+	<h2>Resources</h2>
+	<p><a href="downloads/Arduino_Uno_PCB_Project.pdf">Paper Summarizing This Project</a></p>
+	     </div>
+	</section>
+
+        <!-- Footer -->
+        <footer id="footer">
+          <div class="inner">
+            <ul class="icons">
+              <!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
+              <!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+              <li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+              <li><a href="https://github.com/MH-Bio" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+              <li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+            </ul>
+            <ul class="copyright">
+              <li>&copy; Michael Hernandez</li>
+            </ul>
+          </div>
+        </footer>
+
+      </div>
+
+      <!-- Scripts -->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/jquery.scrollex.min.js"></script>
+      <script src="assets/js/browser.min.js"></script>
+      <script src="assets/js/breakpoints.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <script src="assets/js/main.js"></script>
+      <script src="assets/js/gallery.js"></script>
+</body>
+
+</html>
