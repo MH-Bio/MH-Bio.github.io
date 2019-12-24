@@ -56,6 +56,7 @@
 								
                   <h3>.cpp Code</h3>
                   <pre><code>#include "encoder.h"
+<br>
  encoder :: encoder (unsigned int slots, unsigned int diameter, unsigned int pin){
 	m_speed = 0.0;
 	m_currentTime = 0.0;
@@ -63,14 +64,16 @@
 	m_diameter = diameter; //diameter of the wheel
 	m_pin = pin;
 }
-
+<br>
 void encoder::updateTime(unsigned int time){
 	m_currentTime = time; //storing the time
 	m_speed = (62500*(207.35/(360*(18/m_currentTime))))/1000; //calculation to find speed
 }
+<br>
 double encoder::getSpeed(){
 	return(m_speed); //gets the speed from updateTime
 }
+<br>
 void encoder::zeroSpeed(){
 	m_speed = 0.0; //not moving, set to zero
 }</code></pre>
@@ -80,9 +83,9 @@ void encoder::zeroSpeed(){
                   <h3>.h Code</h3>
                   <pre><code>#ifndef encoder_h
 #define encoder_h
-
+<br>
 class encoder{
-
+<br>
 private:
 	double m_speed; //float to allow the more accuracy for speed
 	double m_currentTime;
@@ -90,7 +93,7 @@ private:
 	unsigned int m_diameter;
 	unsigned int m_pin;
 	double m_prescalar;
-
+<br>
 public:
 	encoder(unsigned int slots, unsigned int diameter, unsigned int pin);
 	//Encoder is the constructor that sets/initializes the parameters
@@ -99,7 +102,7 @@ public:
 	double getSpeed(); //calculate the speed
 	void zeroSpeed(); //set the speed to zero
 };
-
+<br>
 #endif</code></pre>
 
 								</div>
