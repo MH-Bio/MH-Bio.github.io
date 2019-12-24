@@ -1,0 +1,151 @@
+
+
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Gripper Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Gripper Class</h1>
+									</header>
+									<p>The range finder class controls the ultrasonic range detectors.  It works by emitting an ultrasonic sound wave and measuring the amount of time it takes for the sound to return to the sensor.  It can then use the time difference to calculate distance.  If a timeout event occurs then it is assumed that no object is present.</p>
+
+		  
+		  <br>
+								
+                  <h3>.cpp Code</h3>
+                  <pre><code>#include "RangeFinder.h"
+#include &lt;arduino.h&gt;
+RangeFinder :: RangeFinder (byte Epin, byte Tpin,unsigned int SensorNum){
+  m_TrigTime = 0;
+  m_EchoTime = 0;
+  m_TotalTime = 0;
+  m_SensorNum = SensorNum;
+  m_Range = 0;
+  m_Epin = Epin;
+  m_Tpin = Tpin;<br>
+}<br>
+float RangeFinder :: updateRTime(float Etime){
+	m_TrigTime = .0006; //size of the gap between the trigger and echo
+	m_EchoTime =(Etime/15625.000)-m_TrigTime;
+	//divided by the prescaler and subtracts the difference
+	//or gap between the trigger and the echo pulse<br>
+return(m_EchoTime);<br>
+}<br>
+void RangeFinder :: TrigPulse() //created a pulse for the trigger{
+	digitalWrite(m_Tpin, LOW);
+	delayMicroseconds(10);
+	digitalWrite(m_Tpin, HIGH);
+	delayMicroseconds(10);
+	digitalWrite(m_Tpin, LOW);
+	delayMicroseconds(10);
+}<br>
+float RangeFinder :: GetRange(){
+	m_Range= ((m_EchoTime*343)/2)*100; //multiplied by the speed of sound
+	//divided by two to get the length of the signal and multiplied by 100
+	//to get the results in cm.<br>
+return(m_Range);<br>
+}</code></pre>
+  
+<br>
+									
+  <h3>.h Code</h3>
+                  <pre><code>#include &lt;arduino.h&gt;
+#ifndef RangeFinder_h
+#define RangeFinder_h
+class rangefinder{<br>
+private:
+	float m_TrigTime; // trigger time
+	float m_EchoTime; //echo time
+	float m_Range; //the distance of a wall
+	float m_TotalTime; //total duration time
+	unsigned int m_sensornumber; //the sensor that is being used
+	byte m_Epin;
+	byte m_Tpin;<br>
+public:
+	rangefinder(byte Epin, byte Tpin,unsigned int sensornumber); //constructor
+	void TrigPulse(); //generates a pulse for the trigger pin
+	float updateRTime(float Etime); //updates the echo duration time
+	float GetRange(); //gets the distance of the sensor from a wall
+	//bool TargetRange(); //not implemented yet<br>
+};<br>
+#endif</code></pre>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
