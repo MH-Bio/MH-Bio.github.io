@@ -1,0 +1,145 @@
+
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+  <title>Projects - Bluetooth Robot</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/gallery.css" />
+  <link rel="stylesheet" href="assets/css/default-skin.css" />
+  <link rel="stylesheet" href="assets/css/video-responsive.css" />
+
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+  <!-- Wrapper -->
+  <div id="wrapper">
+
+    <!-- Header -->
+    <header id="header">
+      <a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+      <nav>
+        <a href="#menu">Menu</a>
+      </nav>
+    </header>
+
+    <!-- Menu -->
+    <nav id="menu">
+      <ul class="links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutmichael.html">About Michael</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+      <!--
+						<ul class="actions stacked">
+							<li><a href="#" class="button primary fit">Get Started</a></li>
+							<li><a href="#" class="button fit">Log In</a></li>
+						</ul>
+						-->
+    </nav>
+
+    <!-- Main -->
+    <div id="main" class="alt">
+
+      <!-- One -->
+      <section id="one">
+        <div class="inner">
+          <header class="major">
+            <h1>Bluetooth Robot</h1>
+          </header>
+          <p>A robot was built using an Arduino Mega 2560 microcontroller.  The robot had both autonomous driving capabilities and could be driven with a smartphone using bluetooth communication.  The robot had six components working together in order to make it run properly: a bluetooth reciever, infrared line sensors, ultrasonic sensors, wheel encoders, DC motors for each wheel, and a claw that was powered by a servo motor.  The robot was designed to complete four challanges.  The first challange was a timed driving test where the robot had to be piloted by a user to the end of an L shaped track to retrive a foam ball and return to deposit the ball in a recepticle adjacent to the start location.  The second challange was a cruise control challange where the robot needed to mantain a constant speed while driving on a treadmill as the angle of the treadmill was varied.  The third challange was a line follower challange where the robot had to follow a black line on white paper.  In the final challange the robot needed to navigate through a maze autonomously.</p>
+          <p>The robot used bluetooth communication in conjunction with a smartphone running Andriod.  An app was used called <a href="https://play.google.com/store/apps/details?id=nextprototypes.BTSerialController&hl=en_US'>BlueTooth Serial Controller by NEXT PROTOTYPES</a> which is a user programmable serial communication tool was used to communicate with the robot via bluetooth.  Input information recieved from the phone was then used to drive motors in an appropriate direction or cycle the servo connected to the gripper between two predetermined states.</p>
+          <p>Ultrasonic sensors were used to guage the robot's distance from an object.  The sensors would emit an ultrasonic soundwave and measure the amount of time it took for the soundwave to bounce back.  If the soundwave did not bounce back within a certain amount of time the device interpreted the information as the absence of an object.  Two sensors were used, one in the front of the robot and one on the left side of the robot.  Depending on the input recieved from the sensors the robot was programmed to decide if it should turn right, left, or continue straight.</p>
+          <p>Infrared sensors were used to complete the line follower challange.  Two sensors were used in the middle of the robot on the front side about 1" apart.  When the sensor was over a white section of the paper the light would be returned to the unit and produce a high digital signal.  Whenever the sensor was over a black section of paper light would be absorbed by the dark image and the device would return a low digital signal.  Whenever one of the two devices returned a low signal the robot was programmed to maneuver in the opposite direction to get back on the track.</p>
+          
+        </div>
+      </section>
+
+<!-- Gallery from https://www.publicalbum.org/blog/embedding-google-photos-albums -->
+
+<section>
+  <div class="inner>
+    <script src="https://cdn.jsdelivr.net/npm/publicalbum@latest/embed-ui.min.js" async></script>
+      <div class="pa-carousel-widget" style="width:640px; height:480px; display:none;"
+        data-link="https://photos.app.goo.gl/XX7MGKEgoYwXt2949"
+        data-title="Bluetooth Robot"
+        data-description="8 new photos added to shared album"
+        data-delay="120">
+        <object data="https://lh3.googleusercontent.com/NzneX1WpxkpPtmNBMw6n78pzgIpAU5oFW_GelHiuHsOHZwV5gWTkzVUCn9P1LRLvc-AysV0twHwv_FRke4JJ7rXWno9zTZo1WHKJe3Z8SpvqSVZoOrpyZzniulImIK-OhuIIESu_2w=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/wf5rHjkKsQDHttqZx-7wVfpzX-tD1D3fP5tc7SXTmBPkK7VJRxXDn-JzddjRd1MWnS1qS3hgRR9YSyq0TPfT7A84Z6bL2yYL1zZ8nPvZ6FlKtF26d5PcabTNi4qt7Hrfe1OkO94fRA=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/V-yGFhqO-rjgCQfa_c88zXqqbstCjtM_3j0nmq0vxMhlw51_MuN1e3ale37jLntQWWaX-y6UZCVALUbapYzCUo8LiwooVIgtTugj64paqutRdirseJy7O82PHbMttzsOLkCvH2Yc6Q=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/yQ0KUcPl68CaXtwhxXbU9niDjfLkVuAZNqMGJ8u_7GoUMoIwsF1Mp_v-B5MOoRd-rP9NK_QMeMegFDf1QBBI4xFrOcjUDIbCQr_dND4eIadHUBwfisX2AgQmR312WJIwaHB0LBcyQQ=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/1_FbhdM-QrFrlExSHxp3uFqTt3IQghOq2FEQvTl_lTjR_0cIK134aEWuMqJ8qRghEqU23egpA8Az1rH8zR-Vaxj54lakjNwrQ_ge93DhrX7Li0dBG1DJ9OrFjkAmMylhZqrn601-6A=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/8kMRaX-sbf0IjzvEKOEncbnkQ-4ThlCMTIMBon25vCGQLRqLlgjwOg8mA5QMkaF5zZhYhzKVfdlY3gPFVcN6MQbIpMULVtcdmYn7jXkAkVJuxSkLXAmJLFsGehWBROIe7nsi0CI2iw=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/xjjJFDJqwsB2vY92v4cmzhpOP9-CHfnEEuoohHFKxFFCTWNUk0EjgwGPSRFMHXXeEAx17cHOo6gZ-Onx2-SYuHLDAqhanNz5su9-qphtezcxv7iczdmfa36-5IELgrBTwnyw_EdIdQ=w1920-h1080"></object>
+        <object data="https://lh3.googleusercontent.com/tPRgB5dMcITTHSnuOJ5LhERnP2zdB7Cm0RDCVpUqdPC2_fWaJceDu1qwz0srhRKa5JG-kFeh9l9BJ8H0ghLGSe31YWnNZtWyd0cWynakfeNWXJ8LjDThH-EVgCGUDj1FIGush5tWmg=w1920-h1080"></object>
+      </div>
+  </div>
+</section>
+
+        <!-- ~~ YouTube Video ~~ -->
+     <section>
+	<div class="inner">
+  <!-- Video 1 -->
+		<div class="video-responsive">
+			<center>
+			<iframe width="280" height="158" src="https://www.youtube-nocookie.com/embed/wkWswRRCdgw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</center>
+		</div>
+    
+    <!-- Video 2 -->
+    <div class="video-responsive">
+			<center>
+			<iframe width="280" height="158" src="https://www.youtube-nocookie.com/embed/rnySq0od6gs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</center>
+		</div>
+	</div>
+     </section>
+        <!-- ~~ End YouTube Video ~~ -->
+     <section>
+	<div class="inner">
+	<h2>Resources</h2>
+	<p><a href="downloads/Bluetooth_Robot_EE335.pdf">Paper Summarizing This Project</a></p>
+	     </div>
+	</section>
+
+        <!-- Footer -->
+        <footer id="footer">
+          <div class="inner">
+            <ul class="icons">
+              <!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
+              <!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+              <li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+              <li><a href="https://github.com/MH-Bio" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+              <li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+            </ul>
+            <ul class="copyright">
+              <li>&copy; Michael Hernandez</li>
+            </ul>
+          </div>
+        </footer>
+
+      </div>
+
+      <!-- Scripts -->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/jquery.scrolly.min.js"></script>
+      <script src="assets/js/jquery.scrollex.min.js"></script>
+      <script src="assets/js/browser.min.js"></script>
+      <script src="assets/js/breakpoints.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <script src="assets/js/main.js"></script>
+      <script src="assets/js/gallery.js"></script>
+</body>
+
+</html>
