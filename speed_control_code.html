@@ -1,0 +1,198 @@
+
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Gripper Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Gripper Class</h1>
+									</header>
+									<p>The speed control class is what enables the robot to mantain a constant speed regardless of the incline at which the robot is driving on.  It does so by taking information from the wheel encoders and periodically updating registery information in the Arduino.</p>
+
+		  
+		  <br>
+								<!-- ********************CPP Code******************** -->
+                  <h3>.cpp Code</h3>
+                  <pre><code>#include &lt;SpeedControl.h&gt;
+
+SpeedControl::SpeedControl(HardwareSerial *port, Encoder *encoderPtr, Motor *motorPtr1, Motor *motorPtr2, double sampleTime){
+	m_setPoint = 0.0;
+	m_enable = 0;
+	m_error = 0.0;
+	m_currentSpeed = 0.0;
+	m_prevSpeed = 0.0;
+	m_errorIntegral = 0.0;
+	m_sampleTime = sampleTime;
+	m_motor1 = motorPtr1;
+	m_motor2 = motorPtr2;
+	m_encoder = encoderPtr;
+	m_gainIntegral = 100.0;
+	m_gainProportional = 10.0;
+	m_gainDifferential = 25.0;
+	m_integratorLimit = 50.0;
+	m_serialPort = port;
+}<br>
+void SpeedControl::setDesiredSpeed(double speed){
+	m_setPoint = speed;
+}<br>
+double SpeedControl::getDesiredSpeed(){
+	return(m_setPoint);
+}<br>
+	void SpeedControl::enable(){
+	m_enable = 1;
+}<br>
+void SpeedControl::disable(){
+	m_enable = 0;<br>
+void SpeedControl::update(double speed){
+	m_prevSpeed = m_currentSpeed;
+	m_currentSpeed = speed;
+	m_error = (m_currentSpeed - m_setPoint)/100;
+	m_errorIntegral += m_error*m_sampleTime;<br>
+	if(m_errorIntegral > m_integratorLimit)
+		m_errorIntegral = m_integratorLimit;<br>
+	else if(m_errorIntegral < -m_integratorLimit)
+		m_errorIntegral = -m_integratorLimit;
+		double pTerm = m_gainProportional*m_error;
+		double iTerm = m_gainIntegral*m_errorIntegral;
+		double dTerm = m_gainDifferential *(m_currentSpeed - m_prevSpeed)/m_sampleTime;
+		double newDrive = -(iTerm + pTerm - dTerm);
+		newDrive = 255.0*newDrive/30.0;<br>
+	if(newDrive < 0.0)
+		newDrive = 0.0;<br>
+	else if(newDrive > 255.0)
+		newDrive = 255.0;<br>
+	if(m_enable){
+		if(newDrive == 0.0){
+			m_motor1 -> setDrive(0, RELEASE);
+			m_motor2 -> setDrive(0, RELEASE);
+		}<br>
+		else{
+			m_motor1 -> setDrive((int)newDrive, FORWARD);
+			m_motor2 -> setDrive((int)newDrive, FORWARD);
+		}<br>
+		m_serialPort -> print(m_error);
+		m_serialPort -> print(", ");
+		m_serialPort -> print(m_errorIntegral);
+		m_serialPort -> print(", ");
+		m_serialPort -> print(newDrive/255.0);// Normalize
+		m_serialPort -> print("\r");
+	}<br>
+}</code></pre>
+  
+<br>
+									<!-- ********************H Code******************** -->
+  <h3>.h Code</h3>
+                  <pre><code>#include "Arduino.h"
+#include &lt;Encoder.h&gt;
+#include &lt;Motor.h&gt;
+#ifndef SpeedControl_h
+#define SpeedControl_h<br>
+class SpeedControl{<br>	
+private:
+	double m_setPoint;
+	double m_currentSpeed;
+	double m_prevSpeed;
+	double m_sampleTime;
+	double m_error;
+	double m_errorIntegral;
+	double m_gainProportional;
+	double m_gainIntegral;
+	double m_gainDifferential;
+	double m_integratorLimit;
+	bool m_enable;
+	Encoder *m_encoder;
+	Motor *m_motor1;
+	Motor *m_motor2;
+	HardwareSerial *m_serialPort;<br>	
+public:
+	SpeedControl(HardwareSerial *port, Encoder *encoderPtr, Motor *motorPtr1, Motor *motorPtr2, double sampleTime);
+	void setDesiredSpeed(double speed);
+	double getDesiredSpeed();
+	void enable();
+	void disable();
+	void update(double speed);
+	void setPGain(double gain);
+	void setIGain(double gain);
+	void setDGain(double gain);
+	void setILimit(double limit);<br>
+};<br>
+#endif</code></pre>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
