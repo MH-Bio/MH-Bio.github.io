@@ -56,51 +56,51 @@
 								
                   <h3>.cpp Code</h3>
                   <pre><code>#include "encoder.h"
-                    encoder :: encoder (unsigned int slots, unsigned int diameter, unsigned int pin)
-                    {
+ encoder :: encoder (unsigned int slots, unsigned int diameter, unsigned int pin){
+	m_speed = 0.0;
+	m_currentTime = 0.0;
+	m_slots = slots; //number of slots in the encoder wheel is 20, but can be changed
+	m_diameter = diameter; //diameter of the wheel
+	m_pin = pin;
+}
 
-                    m_speed = 0.0;
-                    m_currentTime = 0.0;
-                    m_slots = slots; //number of slots in the encoder wheel is 20, but can be changed
-                    m_diameter = diameter; //diameter of the wheel
-                    m_pin = pin;
-                    }
-                    void encoder::updateTime(unsigned int time){
-                     // m_prescalar = 16000000.0/256.0;
-                    m_currentTime = time; //storing the time
-                    m_speed = (62500*(207.35/(360*(18/m_currentTime))))/1000; //calculation to find speed
-                    }
-                    double encoder::getSpeed(){
-                    return(m_speed); //gets the speed from updateTime
-                    }
-                    void encoder::zeroSpeed(){
-                    m_speed = 0.0; //not moving, set to zero
-                    }
-                  </code></pre>
+void encoder::updateTime(unsigned int time){
+	m_currentTime = time; //storing the time
+	m_speed = (62500*(207.35/(360*(18/m_currentTime))))/1000; //calculation to find speed
+}
+double encoder::getSpeed(){
+	return(m_speed); //gets the speed from updateTime
+}
+void encoder::zeroSpeed(){
+	m_speed = 0.0; //not moving, set to zero
+}</code></pre>
                   
 		  <br>
 									
                   <h3>.h Code</h3>
                   <pre><code>#ifndef encoder_h
-                    #define encoder_h
-                    class encoder{
-                    private:
-                    double m_speed; //float to allow the more accuracy for speed
-                    double m_currentTime;
-                    unsigned int m_slots;
-                     unsigned int m_diameter;
-                     unsigned int m_pin;
-                     double m_prescalar;
-                    public:
-                    encoder(unsigned int slots, unsigned int diameter, unsigned int pin);
-                     //Encoder is the constructor that sets/initializes the parameters
-                    void updateTime(unsigned int time); //function to update the current time from the internal
-                    timer
-                    double getSpeed(); //calculate the speed
-                    void zeroSpeed(); //set the speed to zero
-                    };
-                    #endif
-                  </code></pre>
+#define encoder_h
+
+class encoder{
+
+private:
+	double m_speed; //float to allow the more accuracy for speed
+	double m_currentTime;
+	unsigned int m_slots;
+	unsigned int m_diameter;
+	unsigned int m_pin;
+	double m_prescalar;
+
+public:
+	encoder(unsigned int slots, unsigned int diameter, unsigned int pin);
+	//Encoder is the constructor that sets/initializes the parameters
+	void updateTime(unsigned int time); //function to update the current time from the internal
+	timer
+	double getSpeed(); //calculate the speed
+	void zeroSpeed(); //set the speed to zero
+};
+
+#endif</code></pre>
 
 								</div>
 							</section>
