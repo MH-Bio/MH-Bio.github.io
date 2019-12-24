@@ -54,14 +54,13 @@
                   <pre><code>include &lt;gripper.h&gt;
 #include &lt;arduino.h&gt;
 #define open_angle 90
-# define close_angle 0
-
+# define close_angle 0<br>
 gripper :: gripper(unsinged int pin){
 	m_gripper = new MegaServo;
 	m_gripper -> attach(pin,800,2200);  // The frequencies at which the gripper is open or closed
 	m_gripper -> write(open_angle);
 	m_position = 1;
-	}
+	}<br>
 void gripper :: open(){
 	if(m_position)
 		return;
@@ -69,7 +68,7 @@ void gripper :: open(){
 		m_gripper -> write(open_angle);
 		m_postion = 1;
 		}
-	}
+	}<br>
 void gripper :: close(){
 	if(!m_position)
 		return;
@@ -77,8 +76,7 @@ void gripper :: close(){
 		m_gripper -> write(close_angle);
 		m_position = 0;
 		}
-	}
-</code></pre>
+	}</code></pre>
   
 <br>
 									
@@ -86,19 +84,18 @@ void gripper :: close(){
                   <pre><code>#include &lt;RangeFinder.h&gt;
 #ifndef gripper_h
 #define gripper_h
-#include &lt;MegaServo.h&gt;
+#include &lt;MegaServo.h&gt;<br>
 class gripper{
 private:
- bool m_position;   // The position is either on or off
- MegaServo*m_gripper; //points to the class MegaServo
+	bool m_position;   // The position is either on or off
+	MegaServo*m_gripper; //points to the class MegaServo<br>
 public:
- gripper(unsigned int pin); //Constructor, pin to which it is attached
- void open(); //no return
- void close(); //no return
- bool isOpen(); //returns what state the gripper is in
-};
-#endif
-                  </code></pre>
+	gripper(unsigned int pin); //Constructor, pin to which it is attached
+	void open(); //no return
+	void close(); //no return
+	bool isOpen(); //returns what state the gripper is in
+};<br>
+#endif</code></pre>
 
 								</div>
 							</section>
