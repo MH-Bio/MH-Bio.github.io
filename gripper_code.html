@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Gripper Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Gripper Class</h1>
+									</header>
+									<p>The gripper class controlls the servo which is attached to a gripping device which can open or close.  Two frequencies for the servo are set which determine the open and close angle for the gripper.</p>
+
+		  
+		  <br>
+								
+                  <h3>.cpp Code</h3>
+                  <pre><code>
+include <gripper.h>
+#include <arduino.h>
+#define open_angle 90
+# define close_angle 0
+
+gripper :: gripper(unsinged int pin){
+	m_gripper = new MegaServo;
+	m_gripper -> attach(pin,800,2200);  // The frequencies at which the gripper is open or closed
+	m_gripper -> write(open_angle);
+	m_position = 1;
+	}
+void gripper :: open(){
+	if(m_position)
+		return;
+	else{
+		m_gripper -> write(open_angle);
+		m_postion = 1;
+		}
+	}
+void gripper :: close(){
+	if(!m_position)
+		return;
+	else{
+		m_gripper -> write(close_angle);
+		m_position = 0;
+		}
+	}
+	
+  
+                  <pre><code>
+#include <RangeFinder.h>
+#ifndef gripper_h
+#define gripper_h
+#include <MegaServo.h>
+class gripper{
+private:
+ bool m_position;   // The position is either on or off
+ MegaServo*m_gripper; //points to the class MegaServo
+public:
+ gripper(unsigned int pin); //Constructor, pin to which it is attached
+ void open(); //no return
+ void close(); //no return
+ bool isOpen(); //returns what state the gripper is in
+};
+#endif
+                  </code></pre>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
+								<!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="https://github.com/MH-Bio" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
