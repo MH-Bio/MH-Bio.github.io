@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Encoder Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Encoder Class</h1>
+									</header>
+									<p>The encoder class is used to program the wheel encoders.  It uses infrared light transmission to determine the speed at which the wheel is turning.  By having a known number of slots in the wheel, the distance which a wheel turns can be easially calculated as the beam of light is continuously interrupted, sending a high or low signal back to the microcontroller.  This information when combined with the time it takes to shift from a high to a low signal is used to calculate the speed at which the wheel is turning.</p>
+                  <figure>
+                   <img href="images/bluetooth_robot/encoder_connected_to_arduino.JPG" alt="The wheel encoder connected to the Arduino"></img>
+									 <figcaption>The wheel encoder connected to the Arduino.  The red light indicates that light is being transmitted through a slot in the encoder.</figcaption>
+                  </figure>
+                  <h3>.cpp Code</h3>
+                  <pre><code>#include "encoder.h"
+                    encoder :: encoder (unsigned int slots, unsigned int diameter, unsigned int pin)
+                    {
+
+                    m_speed = 0.0;
+                    m_currentTime = 0.0;
+                    m_slots = slots; //number of slots in the encoder wheel is 20, but can be changed
+                    m_diameter = diameter; //diameter of the wheel
+                    m_pin = pin;
+                    }
+                    void encoder::updateTime(unsigned int time){
+                     // m_prescalar = 16000000.0/256.0;
+                    m_currentTime = time; //storing the time
+                    m_speed = (62500*(207.35/(360*(18/m_currentTime))))/1000; //calculation to find speed
+                    }
+                    double encoder::getSpeed(){
+                    return(m_speed); //gets the speed from updateTime
+                    }
+                    void encoder::zeroSpeed(){
+                    m_speed = 0.0; //not moving, set to zero
+                    }
+                  </code></pre>
+                  
+                  <h3>.h Code</h3>
+                  <pre><code>#ifndef encoder_h
+                  #define encoder_h
+                    class encoder{
+                    private:
+                    double m_speed; //float to allow the more accuracy for speed
+                    double m_currentTime;
+                    unsigned int m_slots;
+                     unsigned int m_diameter;
+                     unsigned int m_pin;
+                     double m_prescalar;
+                    public:
+                    encoder(unsigned int slots, unsigned int diameter, unsigned int pin);
+                     //Encoder is the constructor that sets/initializes the parameters
+                    void updateTime(unsigned int time); //function to update the current time from the internal
+                    timer
+                    double getSpeed(); //calculate the speed
+                    void zeroSpeed(); //set the speed to zero
+                    };
+                    #endif
+                  </code></pre>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<!-- <li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li> -->
+								<!-- <li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="https://github.com/MH-Bio" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
