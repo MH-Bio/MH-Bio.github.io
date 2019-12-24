@@ -1,0 +1,141 @@
+
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Gripper Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Gripper Class</h1>
+									</header>
+									<p>The motor class controls the four DC motors that were used in this project.  It was designed to work with the Adafruit Motor Shield</p>
+
+		  
+		  <br>
+								
+                  <h3>.cpp Code</h3>
+                  <pre><code>#include "motor.h"
+#include &lt;Adafruit_MotorShield.h&gt; //wrapper library<br>
+motor :: motor (Adafruit_MotorShield*shieldPtr, byte motornumber, boolean polarity){
+  m_motornumber = motornumber; //changes the motor number, based on what number is entered
+  m_polarity = polarity; //polarity check, negative and positive leads connection
+  m_motor = shieldPtr -> getMotor(motornumber); //a pointer using the adafruit motorshield library
+  m_command =0;
+  m_dutyCycle =0;
+}<br>
+void motor :: setDrive(unsigned int dutyCycle, unsigned int command){
+  m_dutyCycle = dutyCycle; //PWM that sets the speed of the motor
+  m_command = command; //command used for FORWARD,BACKWARD,or RELEASE
+  if(command == RELEASE)
+    m_motor -> run(RELEASE);
+  else if((m_polarity && m_command == FORWARD)||(!m_polarity && m_command == BACKWARD))
+    m_motor->run(FORWARD); //checks the polarity and sets the wheel to move accordingly 
+  else
+    m_motor->run(BACKWARD);
+    m_motor ->setSpeed(m_dutyCycle);
+}<br>
+unsigned int Motor :: getDrive(){
+  return(m_dutyCycle); //whats the speed from 0-255
+}<br>
+void Motor::stop(){
+  m_motor->setSpeed(0); //stop the wheels
+}</code></pre>
+  
+<br>
+									
+  <h3>.h Code</h3>
+                  <pre><code>#include &lt;Adafruit_MotorShield.h&gt;
+#ifndef motor_h //if this library isn't included already, include
+#define motor_h<br>
+class motor{
+  private:
+    byte m_motornumber;
+    boolean m_polarity;
+    Adafruit_DCMotor*m_motor; //accesses the Adafruit library with a pointer
+    unsigned int m_command;
+    unsigned int m_dutyCycle;<br>
+  public:
+    motor(Adafruit_MotorShield*shieldPtr,byte motorNumber, boolean polarity);
+    void setDrive(unsigned int drive, unsigned int command);
+    void stop();
+    unsigned int getDrive();
+};<br>
+#endif</code></pre>
+
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
