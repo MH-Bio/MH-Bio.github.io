@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Maze Navigation Sketch</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Maze Navigation Sketch</h1>
+									</header>
+									<p>In order to complete the maze challenge the robot had to autonomously navigate through a maze made out of hollow cardboard boxes without touching the sides.  The robot received input from the two ultrasonic range detectors and manipulated each DC motor as needed in order to turn the robot left or right.</p>
+                  
+		   <center><figure>
+                   <img src="images/bluetooth_robot/maze.jpg" alt="" width="66%">
+		   <figcaption></figcaption>
+			  </figure></center>
+
+		  
+		  <br>
+								
+                  <h3>Arduino Sketch</h3>
+                  <pre><code>//*****************************************LIBRARIES*************************************************
+#include &lt;Adafruit_MotorShield.h&gt;
+#include &lt;encoder.h&gt;
+#include &lt;motor.h&gt;
+#include &lt;rangefinder.h&gt;
+#include &lt;speedcontrol.h&gt;
+#include &lt;Wire.h&gt;<br>
+//*******************CREATE THE MOTOR SHIELD OBJECT WITH THE DEFAULT I2C ADDRESS*********************
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();<br>
+//*****************************GLOBAL VARIABLES ARE DECLARED HERE************************************
+volatile double samplingRate = 0.02;
+volatile double setspeed = 0;
+volatile double setspeed1 = 0;<br>
+//**********************************POINTERS ARE DECLARED HERE***************************************
+encoder *rightEncoder = new encoder(20, 66, 48);
+encoder *leftEncoder = new encoder(20, 66, 49);<br>
+motor *LRMotor = new motor(&AFMS, 1, 0); //left rear
+motor *RRMotor = new motor(&AFMS, 2, 1); //right rear
+motor *RFMotor = new motor(&AFMS, 3, 1); //right front
+motor *LFMotor = new motor(&AFMS, 4, 0); //left front.<br>
+rangefinder *frontRange = new rangefinder(11,10,1); // syntax for rangefinder is (Epin,Tpin,SensorNumber), not sure if this is sensor 0 or 1
+rangefinder *sideRange = new rangefinder(9,8,0); // syntax for rangefinder is (Epin,Tpin,SensorNumber), not sure if this is sensor 0 or 1<br>
+speedcontrol *rightSpeed = new speedcontrol(&Serial, rightEncoder, RFMotor, RRMotor, samplingRate);
+speedcontrol *leftSpeed = new speedcontrol(&Serial, leftEncoder, LFMotor, LRMotor, samplingRate);<br>
+//===================================================================================================
+//=========================================SETUP STARTS HERE=========================================
+//===================================================================================================
+void setup() {<br>
+  //******************************************REGISTERS USED*******************************************
+  noInterrupts(); // Disable the ISR's<br>
+  TCCR3A = 0;
+  TCCR3B = 0x0A; // Prescale and CIC mode
+  OCR3A = 0x9C40; // set the compare A Register
+  TIMSK3 = 0x02; // enable the output compare A Match Interrupt
+  TCNT3 = 0x00;<br>
+  // Enable input capture 4 (ICNC4 enable noise canceler, ICES4 trigger on rising edge, CS42/0 noprescaler)
+  TCCR4A = 0x00; // Initilize register to 0
+  TCCR4B = 0x00; // Initilize register to 0
+  TCCR4B = (1 << ICNC4) | (1 << ICES4) | (0 << WGM42) | (1 << CS42) | (0 << CS41) | (1 << CS40);
+  TCCR4C = 0x00; // Initilize register to 0
+  TIMSK4 = (1 << ICIE4); // Input capture interrupt enabled
+  TCNT4 = 0x00; // Sets the Timer to 0<br>
+  // Enable input capture 5 (ICNC5 enable noise canceler, ICES5 trigger on rising edge, CS52/0 noprescaler)
+  TCCR5A = 0x00; // Initilize register to 0
+  TCCR5B = 0x00; // Initilize register to 0
+  TCCR5B = (1 << ICNC5) | (1 << ICES5) | (0 << WGM52) | (1 << CS52) | (0 << CS51) | (1 << CS50);
+  TCCR5C = 0x00; // Initilize register to 0
+  TIMSK5 = (1 << ICIE5); // Input capture interrupt enabled
+  TCNT5 = 0x00; // Sets the Timer to 0<br>
+  interrupts(); // enable interrupts.<br>
+  rightSpeed -> enable();
+  leftSpeed -> enable();<br>
+  AFMS.begin();
+}<br>
+//===================================================================================================
+//==========================================LOOP STARTS HERE=========================================
+//===================================================================================================
+void loop() {
+  setspeed = rightEncoder -> getSpeed();
+  setspeed1 = leftEncoder -> getSpeed();<br>
+  if(frontRange <= 30 && sideRange <= 40){ // tank turn right when something is in front and on the side
+    LRMotor->setDrive(64,FORWARD);
+    RRMotor->setDrive(64,BACKWARD);
+    RFMotor->setDrive(64,BACKWARD);
+    LFMotor->setDrive(64,FORWARD);
+  }
+  else if(frontRange > 30 && sideRange > 40){ // go forward when something is to the left and nothing is in front
+    LRMotor->setDrive(64,FORWARD);
+    RRMotor->setDrive(64,FORWARD);
+    RFMotor->setDrive(64,FORWARD);
+    LFMotor->setDrive(64,FORWARD);
+  }
+  else {
+    LRMotor->stop();
+    RRMotor->stop();
+    RFMotor->stop();
+    LFMotor->stop();
+  }
+}<br>
+//===================================================================================================
+//=======================================COMMANDS CHEAT SHEET========================================
+//===================================================================================================<br>
+//**********************************************ENCODER**********************************************
+//  encoder(unsigned int slots, unsigned int diameter, unsigned int pin)
+//  void updateTime(unsigned int time)  //function to update the current time from the internal timer
+//  double getSpeed()  //calculate the speed
+//  void zeroSpeed();  //set the speed to zero<br>
+//**********************************************GRIPPER**********************************************
+//  gripper(unsigned int pin); //Constructor, pin attached
+//  void open(); //no return
+//  void close(); //no return
+//  bool isOpen(); //returns what state the gripper is in<br>
+//********************************************LINECONTROL********************************************
+//  lineControl(linesensor *leftPTR, linesensor *rightPTR, speedcontrol *leftSpeed, speedcontrol *rightSpeed);
+//  void detectNone();
+//  void updateSpeed();
+//  void detectLeft();
+//  void detectRight();<br>
+//*********************************************LINESENSOR********************************************
+//  linesensor(unsigned in pin, byt sensornumber);
+//  bool linestatus();<br>
+//***********************************************MOTOR***********************************************
+// motor(Adafruit_MotorShield*shieldPtr,byte motorNumber, boolean polarity);
+// void setDrive(unsigned int dutyCycle, unsigned int command)  // set the motor's direction
+// void stop();  // emergency stop - Set speed to zero
+// unsigned int getDrive();  // returns the speed<br>
+//**********************************************RANGE_ECHO*******************************************
+// Range_Echo(int TP, int EP);
+// long Timing();  // calculates the distance for which the object is from the sensor
+// long Ranging(int sys);  // sets the units, SYS for centameters, INC for inches<br>
+//*********************************************SPEEDCONTROL******************************************
+// speedcontrol(HardwareSerial *port, encoder *encoderPtr, motor *motorPtr1, motor *motorPtr2,double sampleTime);
+// void setDesiredSpeed(double speed);  // sets the desired speed
+// double getDesiredSpeed();  // returns the value of the desired speed
+// void enable();  // sets the internal enable flag to 1
+// void disable(); // sets the internal enable flag to 0
+// void update();  // calculates the current speed
+// void setPGain(double gain);
+// void setIGain(double gain);
+// void setDGain(double gain);
+// void setILimit(double limit);</code></pre>
+    
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
