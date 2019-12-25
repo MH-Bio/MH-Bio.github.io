@@ -1,0 +1,203 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Line Follower Sketch</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Line Follower Sketch</h1>
+									</header>
+									<p>In order to complete the line follower challenge the robot had to follow a track made of black electrical tape on white paper without deviating from the track.  The robot needed to make the complete loop in both directions.  At no point could the robot receive any sort of manual override from the smartphone, or be touched by a human operator.  The robot also needed to be able to stop when it detected an obstacle in front of it.  In order to complete this challenge, the Arduino sketch received direct input from the two infrared line sensors.</p>
+                  
+		   <!-- <center><figure>
+                   <img src="#" alt="" width="66%">
+		   <figcaption></figcaption>
+			  </figure></center>
+			-->
+		  
+		  <br>
+								
+                  <h3>Arduino Sketch</h3>
+                  <pre><code>#include &lt;Adafruit_MotorShield.h&gt;
+#include &lt;lineControl.h&gt;
+#include &lt;linesensor.h&gt;
+#include &lt;motor.h&gt;
+#include &lt;Range_Echo.h&gt;
+#include &lt;Wire.h&gt;<br>
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();<br>
+const float UNIT_CONVERSION = 0.003937;
+volatile float frontSensorDistance = 0.0;
+bool rightLineSensor = 1;
+bool leftLineSensor = 1;<br>
+linesensor *leftSensor;
+linesensor *rightSensor;<br>
+motor *RFMotor;// = new motor(&AFMS, 1, 0); //right front
+motor *LFMotor;// = new motor(&AFMS, 2, 1); //left front
+motor *LRMotor;// = new motor(&AFMS, 3, 1); //left rear
+motor *RRMotor;// = new motor(&AFMS, 4, 0); //right rear<br>
+Range_Echo *frontRange;// = new Range_Echo(10, 11);<br>
+void setup() {
+  leftSensor = new linesensor(13);
+  rightSensor = new linesensor(12);
+  frontRange = new Range_Echo(10, 11);
+  RFMotor = new motor(&AFMS, 1, 0); //right front
+  LFMotor = new motor(&AFMS, 2, 1); //left front
+  LRMotor = new motor(&AFMS, 3, 1); //left rear
+  RRMotor = new motor(&AFMS, 4, 0); //right rear<br>
+  frontSensorDistance = (frontRange -> Timing()) * UNIT_CONVERSION;<br>
+  rightLineSensor = rightSensor;
+  leftLineSensor = leftSensor;
+}<br>
+void loop() {
+  Serial.begin(115200);
+  AFMS.begin();<br>
+  frontSensorDistance = (frontRange -> Timing()) * UNIT_CONVERSION;<br>
+  while ((frontSensorDistance > 1.0) && (frontSensorDistance < 7.5)) {
+    LFMotor->stop();
+    LRMotor->stop();
+    RFMotor->stop();
+    RRMotor->stop();
+    frontSensorDistance = (frontRange -> Timing()) * UNIT_CONVERSION;
+  }<br>
+  if (frontSensorDistance > 8.0) {<br>
+    if (digitalRead(13) == HIGH) {
+      LFMotor->setDrive(0.0, FORWARD);
+      LRMotor->setDrive(0.0, FORWARD);
+      RFMotor->setDrive(230.0, FORWARD);
+      RRMotor->setDrive(230.0, FORWARD);
+    }
+    else {
+      LFMotor->setDrive(230.0, FORWARD);
+      LRMotor->setDrive(230.0, FORWARD);
+      RFMotor->setDrive(0.0, FORWARD);
+      RRMotor->setDrive(0.0, FORWARD);
+    }
+    if (digitalRead(12) == HIGH) {
+      LFMotor->setDrive(230.0, FORWARD);
+      LRMotor->setDrive(230.0, FORWARD);
+      RFMotor->setDrive(0.0, FORWARD);
+      RRMotor->setDrive(0.0, FORWARD);
+    }    
+    else {
+      LFMotor->setDrive(0.0, FORWARD);
+      LRMotor->setDrive(0.0, FORWARD);
+      RFMotor->setDrive(230.0, FORWARD);
+      RRMotor->setDrive(230.0, FORWARD);
+    }
+  }
+}<br>
+//===================================================================================================
+//=======================================COMMANDS CHEAT SHEET========================================
+//===================================================================================================<br>
+//**********************************************ENCODER**********************************************
+//  encoder(unsigned int slots, unsigned int diameter, unsigned int pin)
+//  void updateTime(unsigned int time)  //function to update the current time from the internal timer
+//  double getSpeed()  //calculate the speed
+//  void zeroSpeed();  //set the speed to zero<br>
+//********************************************LINECONTROL********************************************
+//  lineControl(linesensor *leftPTR, linesensor *rightPTR, speedcontrol *leftSpeed, speedcontrol *rightSpeed);
+//  void detectNone();
+//  void updateSpeed();
+//  void detectLeft();
+//  void detectRight();<br>
+//*********************************************LINESENSOR********************************************
+//  linesensor(unsigned int pin, byt sensornumber);
+//  bool linestatus();<br>
+//***********************************************MOTOR***********************************************
+//  motor(Adafruit_MotorShield*shieldPtr,byte motorNumber, boolean polarity);
+//  void setDrive(unsigned int dutyCycle, unsigned int command)  // set the motor's direction
+//  void stop();  // emergency stop - Set speed to zero
+//  unsigned int getDrive();  // returns the speed<br>
+//**********************************************RANGE_ECHO*******************************************
+//  Range_Echo(int TP, int EP);
+//  long Timing();  // calculates the distance for which the object is from the sensor
+//  long Ranging(int sys);  // sets the units, SYS for centameters, INC for inches<br>
+//*********************************************SPEEDCONTROL******************************************
+//  speedcontrol(HardwareSerial *port, encoder *encoderPtr, motor *motorPtr1, motor *motorPtr2,double sampleTime);
+//  void setDesiredSpeed(double speed);  // sets the desired speed
+//  double getDesiredSpeed();  // returns the value of the desired speed
+//  void enable();  // sets the internal enable flag to 1
+//  void disable(); // sets the internal enable flag to 0
+//  void update();  // calculates the current speed
+//  void setPGain(double gain);
+//  void setIGain(double gain);
+//  void setDGain(double gain);
+//  void setILimit(double limit);</code></pre>
+    
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
