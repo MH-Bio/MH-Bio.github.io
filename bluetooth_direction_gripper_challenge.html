@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<!--
+	Forty by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Encoder Class</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo"><strong>Michael</strong> <span>Hernandez</span></a>
+						<nav>
+							<a href="#menu">Menu</a>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="aboutmichael.html">About Michael</a></li>
+							<li><a href="education.html">Education</a></li>
+							<li><a href="elements.html">Projects</a></li>
+							<li><a href="contact.html">Contact</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main" class="alt">
+
+						<!-- One -->
+							<section id="one">
+								<div class="inner">
+									<header class="major">
+										<h1>Encoder Class</h1>
+									</header>
+									<p>The encoder class is used to program the wheel encoders.  It uses infrared light transmission to determine the speed at which the wheel is turning.  By having a known number of slots in the wheel, the distance which a wheel turns can be easially calculated as the beam of light is continuously interrupted, sending a high or low signal back to the microcontroller.  This information when combined with the time it takes to shift from a high to a low signal is used to calculate the speed at which the wheel is turning.</p>
+                  
+		   <center><figure>
+                   <img src="https://raw.githubusercontent.com/MH-Bio/MH-Bio.github.io/master/images/bluetooth_robot/encoder_connected_to_arduino.JPG" alt="The wheel encoder connected to the Arduino" width="66%">
+		   <figcaption>The wheel encoder connected to the Arduino.  The red light indicates that light is being transmitted through a slot in the encoder.</figcaption>
+			  </figure></center>
+		  
+		  <br>
+								
+                  <h3>Arduino Sketch</h3>
+                  <pre><code>//********************************************SUMMARY************************************************
+//  This sketch is the program designed to control the robot to navigate the ball portion of the
+//  obsticle course.  It will communicate with a bluetooth cell phone from which it will recieve input
+//  to control the speed, and direction of the robot as well as to minipulate the gripper at the front
+//  of the robot.<br>
+//******************************LIBRARIES THAT ARE TO BE INCLUDED************************************
+#include &lt;Adafruit_MotorShield.h&gt;
+#include &lt;Gripper.h&gt;
+#include &lt;MegaServo.h&gt;
+#include &lt;motor.h&gt;
+#include &lt;SoftwareSerial.h&gt;<br>
+//*******************CREATE THE MOTOR SHIELD OBJECT WITH THE DEFAULT I2C ADDRESS*********************
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();<br>
+//*****************************GLOBAL CONSTANTS ARE DECLARED HERE************************************
+const int DELAY_TIME = 1000;
+const float UNIT_CONVERSION = 0.003937;  //Converts whatever unit pops out for the range finder to in
+const byte rxPin = 18;
+const byte txPin = 19;<br>
+//*****************************GLOBAL VARIABLES ARE DECLARED HERE************************************
+char message[256];
+int index = 0;<br>
+//**********************************POINTERS ARE DECLARED HERE***************************************
+Gripper *openGrip;// = new Gripper(36);<br>
+MegaServo myGripper;<br>
+motor *RFMotor = new motor(&AFMS, 1, 0); //right front
+motor *LFMotor = new motor(&AFMS, 2, 1); //left front
+motor *LRMotor = new motor(&AFMS, 3, 1); //left rear
+motor *RRMotor = new motor(&AFMS, 4, 0); //right rear<br>
+SoftwareSerial BTSerial(rxPin, txPin);<br>
+//===================================================================================================
+//=========================================SETUP STARTS HERE=========================================
+//===================================================================================================
+void setup() {<br>
+  pinMode(rxPin, INPUT);
+  pinMode(txPin, OUTPUT);<br>
+  Serial.begin(38400);  // Usually 9600 for BT mode, although it is sometimes 38400:
+  Serial1.begin(115200);
+  AFMS.begin();
+  Serial.println("test");<br>
+  openGrip = new Gripper(36);
+  Gripper(22);
+  delay(1000);  // delay for 1 second before moving on
+  openGrip -> close(); // call the close() function from the .cpp file to close the gripper.
+}<br>
+//===================================================================================================
+//==========================================LOOP STARTS HERE=========================================
+//===================================================================================================
+void loop() {
+  if (Serial1.available()) {
+    message[index] = (char)Serial1.read();
+    if (message[index] == 0x3F) //Checks for a ? character
+    {
+      switch (message[0]) { // was previously message[0]
+        case '1':
+          Serial.print("Button 1 Pressed");
+          LFMotor->setDrive(60.0, FORWARD);
+          LRMotor->setDrive(60.0, FORWARD);
+          RFMotor->setDrive(150.0, FORWARD);
+          RRMotor->setDrive(150.0, FORWARD);
+          break;
+        case '2':
+          Serial.print("Button 2 Pressed");
+          LFMotor->setDrive(125.0, FORWARD);
+          LRMotor->setDrive(125.0, FORWARD);
+          RFMotor->setDrive(132.0, FORWARD);
+          RRMotor->setDrive(132.0, FORWARD);
+          break;
+        case '3':
+          Serial.print("Button 3 Pressed");
+          LFMotor->setDrive(130.0, FORWARD);
+          LRMotor->setDrive(130.0, FORWARD);
+          RFMotor->setDrive(65.0, FORWARD);
+          RRMotor->setDrive(65.0, FORWARD);
+          break;
+        case '4':
+          Serial.print("Button 4 Pressed");
+          LFMotor->setDrive(60.0, BACKWARD);
+          LRMotor->setDrive(60.0, BACKWARD);
+          RFMotor->setDrive(60.0, FORWARD);
+          RRMotor->setDrive(60.0, FORWARD);
+          break;
+        case '5':
+          Serial.print("Button 5 Pressed");
+          if (openGrip->isOpen()) {
+            openGrip->close();
+          }
+          else {
+            openGrip->open();
+          }
+          break;
+        case '6':
+          Serial.print("Button 6 Pressed");
+          LFMotor->setDrive(60.0, FORWARD);
+          LRMotor->setDrive(60.0, FORWARD);
+          RFMotor->setDrive(60.0, BACKWARD);
+          RRMotor->setDrive(60.0, BACKWARD);
+          break;
+        case '7':
+          Serial.print("Button 7 Pressed");
+          LFMotor->setDrive(60.0, BACKWARD);
+          LRMotor->setDrive(60.0, BACKWARD);
+          RFMotor->setDrive(120.0, BACKWARD);
+          RRMotor->setDrive(120.0, BACKWARD);
+          break;
+        case '8':
+          Serial.print("Button 8 Pressed");
+          LFMotor->setDrive(130.0, BACKWARD);
+          LRMotor->setDrive(130.0, BACKWARD);
+          RFMotor->setDrive(120.0, BACKWARD);
+          RRMotor->setDrive(120.0, BACKWARD);
+          break;
+        case '9':
+          Serial.print("Button 9 Pressed");
+          LFMotor->setDrive(150.0, BACKWARD);
+          LRMotor->setDrive(150.0, BACKWARD);
+          RFMotor->setDrive(60.0, BACKWARD);
+          RRMotor->setDrive(60.0, BACKWARD);
+          break;
+        default :
+          Serial.print("BREAK");
+          break;
+      }<br>
+      index = 0;
+      Serial.println();
+    }<br>
+    else if (message[index] == 0x24) { //Checks for a $ character
+      switch (message[0]) {
+        case '1':
+          Serial.print("Button 1 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '2':
+          Serial.print("Button 2 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '3':
+          Serial.print("Button 3 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '4':
+          Serial.print("Button 4 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '5':
+          Serial.print("Button 5 Released");
+          break;
+        case '6':
+          Serial.print("Button 6 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '7':
+          Serial.print("Button 7 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '8':
+          Serial.print("Button 8 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        case '9':
+          Serial.print("Button 9 Released");
+          LFMotor->stop();
+          LRMotor->stop();
+          RFMotor->stop();
+          RRMotor->stop();
+          break;
+        default:
+          Serial.print("BREAK");
+          break;
+      }<br>
+      index = 0;
+      Serial.println();
+    }<br>
+    else {
+      index++; //Increases the index counter by one if neither a ? or a $ was encountered.
+    }
+  }
+}
+<br>
+//===================================================================================================
+//=======================================COMMANDS CHEAT SHEET========================================
+//===================================================================================================<br>
+//**********************************************ENCODER**********************************************
+//  encoder(unsigned int slots, unsigned int diameter, unsigned int pin)
+//  void updateTime(unsigned int time)  //function to update the current time from the internal timer
+//  double getSpeed()  //calculate the speed
+//  void zeroSpeed();  //set the speed to zero<br>
+//**********************************************GRIPPER**********************************************
+//  gripper(unsigned int pin); //Constructor, pin attached
+//  void open(); //no return
+//  void close(); //no return
+//  bool isOpen(); //returns what state the gripper is in<br>
+//********************************************LINECONTROL********************************************
+//  lineControl(linesensor *leftPTR, linesensor *rightPTR, speedcontrol *leftSpeed, speedcontrol *rightSpeed);
+//  void detectNone();
+//  void updateSpeed();
+//  void detectLeft();
+//  void detectRight();<br>
+//*********************************************LINESENSOR********************************************
+//  linesensor(unsigned in pin, byt sensornumber);
+//  bool linestatus();<br>
+//***********************************************MOTOR***********************************************
+// motor(Adafruit_MotorShield*shieldPtr,byte motorNumber, boolean polarity);
+// void setDrive(unsigned int dutyCycle, unsigned int command)  // set the motor's direction
+// void stop();  // emergency stop - Set speed to zero
+// unsigned int getDrive();  // returns the speed<br>
+//**********************************************RANGE_ECHO*******************************************
+// Range_Echo(int TP, int EP);
+// long Timing();  // calculates the distance for which the object is from the sensor
+// long Ranging(int sys);  // sets the units, SYS for centameters, INC for inches<br>
+//*********************************************SPEEDCONTROL******************************************
+// speedcontrol(HardwareSerial *port, encoder *encoderPtr, motor *motorPtr1, motor *motorPtr2,double sampleTime);
+// void setDesiredSpeed(double speed);  // sets the desired speed
+// double getDesiredSpeed();  // returns the value of the desired speed
+// void enable();  // sets the internal enable flag to 1
+// void disable(); // sets the internal enable flag to 0
+// void update();  // calculates the current speed
+// void setPGain(double gain);
+// void setIGain(double gain);
+// void setDGain(double gain);
+// void setILimit(double limit);</code></pre>
+    
+								</div>
+							</section>
+
+					</div>
+
+				<!-- Contact -->
+					<section id="contact">
+						<div class="inner">
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="icons">
+								<li><a href="contact.html" class="icon solid alt fa-envelope"><span class="label">Email</span></a></li> 
+								<li><a href="https://www.instagram.com/michael_hernandez_tech/" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+								<!-- <li><a href="#"><span class="label">GitHub</span></a></li> -->
+								<li><a href="https://www.linkedin.com/in/michael-hernandez-124420120/" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+							</ul>
+							<ul class="copyright">
+								<li>&copy; Michael Hernandez</li> <!-- <li>Design: <a href="https://html5up.net">HTML5 UP</a></li> -->
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
