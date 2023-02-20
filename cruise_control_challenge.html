@@ -31,7 +31,7 @@
 							<li><a href="index.html">Home</a></li>
 							<li><a href="aboutmichael.html">About Michael</a></li>
 							<li><a href="education.html">Education</a></li>
-							<li><a href="projects.html">Projects</a></li>
+							<li><a href="projects.html">School Projects</a></li>
 							<li><a href="contact.html">Contact</a></li>
 						</ul>
 					</nav>
@@ -90,16 +90,16 @@ TCNT3 = 0x00;<br>
 // Enable input capture 4 (ICNC4 enable noise canceler, ICES4 trigger on rising edge, CS42/0 no prescaler)
 TCCR4A = 0x00; // Initilize register to 0
 TCCR4B = 0x00; // Initilize register to 0
-TCCR4B = (1<<ICNC4) | (1<<ICES4) | (0<<WGM42) | (1<<CS42) | (0<<CS41) | (1<<CS40);
+TCCR4B = (1 << ICNC4) | (1 << ICES4) | (0 << WGM42) | (1 << CS42) | (0 << CS41) | (1 << CS40);
 TCCR4C = 0x00; // Initilize register to 0
 TIMSK4 = (1<<ICIE4); // Input capture interrupt enabled
 TCNT4 = 0x00; // Sets the Timer to 0<br>
 // Enable input capture 5 (ICNC5 enable noise canceler, ICES5 trigger on rising edge, CS52/0 no prescaler)
 TCCR5A = 0x00; // Initilize register to 0
 TCCR5B = 0x00; // Initilize register to 0
-TCCR5B = (1<<ICNC5) | (1<<ICES5) | (0<<WGM52) | (1<<CS52) | (0<<CS51) | (1<<CS50);
+TCCR5B = (1 << ICNC5) | (1 << ICES5) | (0 << WGM52) | (1 << CS52) | (0 << CS51) | (1 << CS50);
 TCCR5C = 0x00; // Initilize register to 0
-TIMSK5 = (1<<ICIE5); // Input capture interrupt enabled
+TIMSK5 = (1 << ICIE5); // Input capture interrupt enabled
 TCNT5 = 0x00; // Sets the Timer to 0<br>
 interrupts(); // enable interrupts.
 rightSpeed -> enable();
