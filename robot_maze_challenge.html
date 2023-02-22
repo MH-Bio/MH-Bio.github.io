@@ -81,15 +81,12 @@ Range_Echo *leftRange;<br>
 void setup() {<br>
   //******************************************REGISTERS USED*******************************************
   AFMS.begin();<br>
-  
   frontSensorDistance = (frontRange -> Timing()) * UNIT_CONVERSION;
   leftSensorDistance = (leftRange -> Timing()) * UNIT_CONVERSION;<br>
-  
   RFMotor = new motor(&AFMS, 1, 0); //right front
   LFMotor = new motor(&AFMS, 2, 1); //left front
   LRMotor = new motor(&AFMS, 3, 1); //left rear
   RRMotor = new motor(&AFMS, 4, 0); //right rear<br>
-  
   frontRange = new Range_Echo(10, 11);
   leftRange = new Range_Echo(8, 9);
 }<br>
